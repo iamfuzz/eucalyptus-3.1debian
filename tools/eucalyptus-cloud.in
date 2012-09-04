@@ -328,6 +328,11 @@ export VDDK_HOME
 
 case "$1" in
   start)
+	if [ ! -e /var/run/eucalyptus ]; then
+		mkdir -p /var/run/eucalyptus
+		chown eucalyptus:eucalyptus /var/run/eucalyptus
+ 	fi
+
 	if [ "$VERBOSE" != no ]; then
 		if [ "$WE_HAVE_LSB" = "Y" ]; then
 			log_daemon_msg "Starting $DESC" "$NAME"
@@ -405,6 +410,9 @@ case "$1" in
   restart)
 	$0 stop
 	$0 start
+	;;
+  force-reload)
+	restart
 	;;
   status)
 	if do_status ; then
